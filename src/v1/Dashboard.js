@@ -32,6 +32,9 @@ import Button from "@mui/material/Button";
 import moment from "moment";
 import BackupIcon from "@mui/icons-material/Backup";
 import RestoreIcon from "@mui/icons-material/Restore";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { Grid } from "@mui/material";
 
 function Dahboard() {
   const navigate = useNavigate();
@@ -70,6 +73,7 @@ function Dahboard() {
   const [screenSize, setScreensize] = React.useState(window.innerWidth);
   const [date, setDate] = React.useState();
   const [searchdate, setSearchdate] = React.useState();
+  const [showFeature, setShowFeature] = React.useState(false);
   const [reloadstate, setReloadstate] = React.useState(false);
   const setDimension = () => {
     setScreensize(window.innerWidth);
@@ -476,45 +480,36 @@ function Dahboard() {
                   }}
                 />
               </div>
-              {backupstatus === "0" ? (
-                <Button
+              <Button
                   sx={ButtonStyle}
                   id="startBackupFunction"
                   onClick={() => {
-                    backupAndRestoreFunction("backupstatus");
+                    setShowFeature(!showFeature)
                   }}
                 >
-                  Backup&nbsp; <BackupIcon />
+                  {showFeature ? `Hide Feature ` : `Show Feature `  } 
+                  {showFeature ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" /> } 
                 </Button>
-              ) : null}
-              {skeleton?.user_name?.lastbackupdate !== "" ? (
-                <Button
-                  sx={ButtonStyle}
-                  id="startRestoreFunction"
-                  onClick={() => {
-                    backupAndRestoreFunction("restorestatus");
-                  }}
-                >
-                  Restore&nbsp; <RestoreIcon />
-                </Button>
-              ) : null}
             </div>
             <div
                 style={{
                   textAlign: "center",
-                  fontSize: "16px",
-                  padding:"25px"
+                  fontSize: "12px",
+                  padding:"5px 25px"
                 }}
               >
                Notepad app's use and transfer of information received from Google APIs to any other app will adhere 
                to <a target="_blank" href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.
               </div>
+          {showFeature && <Grid container xs={12} alignItems={"center"} justifyContent={'space-around'} >
+            <Grid item xs={12} sm={9}>
             {backupstatus !== undefined ? (
               <div
                 style={{
-                  textAlign: "center",
+                  textAlign: "left",
                   fontWeight: "bold",
-                  fontSize: "18px",
+                  fontSize: "14px",
+                  paddingLeft:'30px'
                 }}
               >
                 {textMapper[backupstatus]}
@@ -522,9 +517,10 @@ function Dahboard() {
             ) : (
               <div
                 style={{
-                  textAlign: "center",
+                  textAlign: "left",
                   fontWeight: "bold",
-                  fontSize: "18px",
+                  fontSize: "14px",
+                  paddingLeft:'30px'
                 }}
               >
                 loading...
@@ -532,9 +528,10 @@ function Dahboard() {
             )}
             <div
               style={{
-                textAlign: "center",
+                textAlign: "left",
                 fontWeight: "bold",
-                fontSize: "16px",
+                fontSize: "14px",
+                paddingLeft:'30px'
               }}
             >
               {skeleton?.user_name?.lastbackupdate && (
@@ -556,6 +553,32 @@ function Dahboard() {
                 </div>
               )}
             </div>
+            </Grid>
+            <Grid item xs={2}>
+            {backupstatus === "0" ? (
+                <Button
+                  sx={ButtonStyle}
+                  id="startBackupFunction"
+                  onClick={() => {
+                    backupAndRestoreFunction("backupstatus");
+                  }}
+                >
+                  Backup&nbsp; <BackupIcon />
+                </Button>
+              ) : null}
+              {skeleton?.user_name?.lastbackupdate !== "" ? (
+                <Button
+                  sx={ButtonStyle}
+                  id="startRestoreFunction"
+                  onClick={() => {
+                    backupAndRestoreFunction("restorestatus");
+                  }}
+                >
+                  Restore&nbsp; <RestoreIcon />
+                </Button>
+              ) : null}
+            </Grid>
+            </Grid>  }
             <div>
               {checkundefinednull(message) ||
               checkundefinednull(title) ||

@@ -7,6 +7,8 @@ import DownArrowImg from "./downarrow.svg";
 import ToDoImg from "./todo.svg";
 import BackupIcon from "./backupicon.png";
 import CompletedGif from "./completed.gif";
+import BackupImg from "./backup.png"
+import RestoreImg from "./restore.png"
 
 export {
   Login3,
@@ -18,4 +20,6 @@ export {
   ToDoImg,
   BackupIcon,
   CompletedGif,
+  BackupImg,
+  RestoreImg
 };
