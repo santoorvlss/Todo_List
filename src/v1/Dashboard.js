@@ -482,7 +482,6 @@ function Dahboard() {
               </div>
               <Button
                   sx={ButtonStyle}
-                  id="startBackupFunction"
                   onClick={() => {
                     setShowFeature(!showFeature)
                   }}
