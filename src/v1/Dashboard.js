@@ -19,6 +19,7 @@ import TextField from "@mui/material/TextField";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import checkundefinednull from "./validators/checkundefinednull";
 import ReloadDialogbox from "./ReloadDialogbox";
+import FeaturesDialog from "./FeaturesDialog";
 import hashCode from "./Hashingstring";
 import SelectModeContextProvider from "./SelectModeContext";
 import { SnackbarProvider } from "notistack";
@@ -349,10 +350,33 @@ function Dahboard() {
 
   const textMapper = {
     "": "Welcome to Notepad application",
-    0: "Recent Changes not backedup . Please back it up to prevent Data Loss",
-    1: "Your Data is Backedup upto now",
+    0: "Recent changes not backed up . Please back it up to prevent data loss",
+    1: "Your data is safely backed up to date with in google",
   };
 
+  const BackupLogicButton = backupstatus === "0" ? (
+    <Button
+      sx={ButtonStyle}
+      id="startBackupFunction"
+      onClick={() => {
+        backupAndRestoreFunction("backupstatus");
+      }}
+    >
+      Backup&nbsp; <BackupIcon fontSize="small" />
+    </Button>
+  ) : null;
+
+  const RestoreLogicButton=skeleton?.user_name?.lastbackupdate !== "" ? (
+                <Button
+                  sx={ButtonStyle}
+                  id="startRestoreFunction"
+                  onClick={() => {
+                    backupAndRestoreFunction("restorestatus");
+                  }}
+                >
+                  Restore&nbsp; <RestoreIcon fontSize="small" />
+                </Button>
+              ) : null;
   if (skeleton?.user_name?.backupstatus === "initiated") {
     return <BackupPage />;
   } else if (skeleton?.user_name?.restorestatus === "initiated") {
@@ -486,7 +510,7 @@ function Dahboard() {
                     setShowFeature(!showFeature)
                   }}
                 >
-                  {showFeature ? `Hide Feature ` : `Show Feature `  } 
+                  {showFeature ? `Hide Features ` : `Show Features `  } 
                   {showFeature ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" /> } 
                 </Button>
             </div>
@@ -500,84 +524,6 @@ function Dahboard() {
                Notepad app's use and transfer of information received from Google APIs to any other app will adhere 
                to <a target="_blank" href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.
               </div>
-          {showFeature && <Grid container xs={12} alignItems={"center"} justifyContent={'space-around'} >
-            <Grid item xs={12} sm={9}>
-            {backupstatus !== undefined ? (
-              <div
-                style={{
-                  textAlign: "left",
-                  fontWeight: "bold",
-                  fontSize: "14px",
-                  paddingLeft:'30px'
-                }}
-              >
-                {textMapper[backupstatus]}
-              </div>
-            ) : (
-              <div
-                style={{
-                  textAlign: "left",
-                  fontWeight: "bold",
-                  fontSize: "14px",
-                  paddingLeft:'30px'
-                }}
-              >
-                loading...
-              </div>
-            )}
-            <div
-              style={{
-                textAlign: "left",
-                fontWeight: "bold",
-                fontSize: "14px",
-                paddingLeft:'30px'
-              }}
-            >
-              {skeleton?.user_name?.lastbackupdate && (
-                <div>
-                  Last backedup at &nbsp;
-                  {moment
-                    .utc(skeleton?.user_name?.lastbackupdate)
-                    .local()
-                    .format("MMMM Do YYYY, h:mm a")}
-                </div>
-              )}
-              {skeleton?.user_name?.lastrestoredate && (
-                <div>
-                  Last restored at &nbsp;
-                  {moment
-                    .utc(skeleton?.user_name?.lastrestoredate)
-                    .local()
-                    .format("MMMM Do YYYY, h:mm a")}
-                </div>
-              )}
-            </div>
-            </Grid>
-            <Grid item xs={2}>
-            {backupstatus === "0" ? (
-                <Button
-                  sx={ButtonStyle}
-                  id="startBackupFunction"
-                  onClick={() => {
-                    backupAndRestoreFunction("backupstatus");
-                  }}
-                >
-                  Backup&nbsp; <BackupIcon />
-                </Button>
-              ) : null}
-              {skeleton?.user_name?.lastbackupdate !== "" ? (
-                <Button
-                  sx={ButtonStyle}
-                  id="startRestoreFunction"
-                  onClick={() => {
-                    backupAndRestoreFunction("restorestatus");
-                  }}
-                >
-                  Restore&nbsp; <RestoreIcon />
-                </Button>
-              ) : null}
-            </Grid>
-            </Grid>  }
             <div>
               {checkundefinednull(message) ||
               checkundefinednull(title) ||
@@ -615,6 +561,21 @@ function Dahboard() {
           <ReloadDialogbox
             dialogstate={reloadstate}
             handleReloadClick={handleReloadClick}
+          />
+          <FeaturesDialog
+            dialogstate={showFeature}
+            handleClose={()=>{setShowFeature(false)}}
+            dailogContentText= {backupstatus !== undefined ? textMapper[backupstatus] : '...loading'}
+            lastRestoreTime={skeleton?.user_name?.lastrestoredate && moment
+              .utc(skeleton?.user_name?.lastrestoredate)
+              .local()
+              .format("MMMM Do YYYY, h:mm a")}
+            lastBackupTime={skeleton?.user_name?.lastbackupdate && moment
+              .utc(skeleton?.user_name?.lastbackupdate)
+              .local()
+              .format("MMMM Do YYYY, h:mm a")}
+            BackupLogicButton={BackupLogicButton}
+            RestoreLogicButton={RestoreLogicButton}
           />
           <Footer />
         </SnackbarProvider>
