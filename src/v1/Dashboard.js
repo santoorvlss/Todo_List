@@ -350,8 +350,8 @@ function Dahboard() {
 
   const textMapper = {
     "": "Welcome to Notepad application",
-    0: "Recent changes not backed up . Please back it up to prevent data loss",
-    1: "Your data is safely backed up to date with in google",
+    0: "Your recent changes haven't been backed up with Google yet. To avoid any risk of data loss, please take a moment to back them up now.",
+    1: "Rest assured, your data is fully backed up and up-to-date with Google's Docs.",
   };
 
   const BackupLogicButton = backupstatus === "0" ? (
