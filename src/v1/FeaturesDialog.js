@@ -71,16 +71,16 @@ const FeaturesDialog = ({ dialogstate, handleClose,dailogContentText,lastRestore
   <TableHead>Action</TableHead>
   </tr>      
   <tr>
-{lastBackupTime &&  <>
-  <TableData>{lastBackupTime}</TableData>
-  <TableData>{BackupLogicButton}</TableData></>
-  }
+<>
+  <TableData>{lastBackupTime ? lastBackupTime : 'No history'}</TableData>
+                <TableData>{BackupLogicButton}</TableData>
+              </>
   </tr>
   <tr>
-  {lastRestoreTime && <>
-  <TableData>{lastRestoreTime}</TableData>
+  <>
+  <TableData>{lastRestoreTime ? lastRestoreTime : 'No history'}</TableData>
   <TableData>{RestoreLogicButton}</TableData>
-  </>}
+  </>
   </tr>
 </Table>
         </DialogContentText>
